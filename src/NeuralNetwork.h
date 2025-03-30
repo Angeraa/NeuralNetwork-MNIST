@@ -11,7 +11,9 @@ class NeuralNetwork {
   public:
     NeuralNetwork(std::vector<Layer> layers);
     NeuralNetwork& run(VectorXd& input);
+    NeuralNetwork& backward(VectorXd &input, VectorXd &target, double learning_rate);
     VectorXd get_output();
+
 };
 
 #endif
