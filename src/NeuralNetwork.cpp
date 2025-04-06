@@ -1,3 +1,4 @@
+#include <iostream>
 #include "NeuralNetwork.h"
 #include "functions.h"
 
@@ -36,4 +37,50 @@ NeuralNetwork& NeuralNetwork::backward(VectorXd &input, VectorXd &target, double
 
 VectorXd NeuralNetwork::get_output() {
   return layers.back().get_activated_values();
+}
+
+void NeuralNetwork::train(const std::vector<VectorXd> &inputs, std::vector<VectorXd> &targets, double learning_rate, int epochs) {
+  for (int i = 0; i < epochs; i++) {
+    double current_epoch_loss = 0.0;
+    for (size_t j = 0; j < inputs.size(); j++) {
+      VectorXd input = inputs[j];
+      VectorXd target = targets[j];
+
+      run(input);
+
+      VectorXd output = get_output();
+      double loss = error(output, target);
+      current_epoch_loss += loss;
+
+      backward(input, target, learning_rate);
+    }
+    current_epoch_loss /= inputs.size();
+    std::cout << "Epoch " << i + 1 << "loss: " << current_epoch_loss << std::endl;
+  }
+}
+
+void NeuralNetwork::test(const std::vector<VectorXd> &inputs, std::vector<VectorXd> &targets) {
+  int correct = 0;
+  for (size_t i = 0; i < inputs.size(); i++) {
+    VectorXd input = inputs[i];
+    VectorXd target = targets[i];
+
+    run(input);
+
+    VectorXd output = get_output();
+
+    int predicted_index;
+    int target_index;
+    output.maxCoeff(&predicted_index);
+    target.maxCoeff(&target_index);
+    if (predicted_index == target_index) {
+      correct++;
+    }
+    if (i < inputs.size() - 1 && i % 100 == 0) {
+      double ongoing_accuracy = static_cast<double>(correct) / i;
+      std::cout << "Ongoing Accuracy: " << ongoing_accuracy << std::endl;
+    }
+  }
+  double accuracy = static_cast<double>(correct) / inputs.size();
+  std::cout << "Final Accuracy: " << accuracy << std::endl;
 }

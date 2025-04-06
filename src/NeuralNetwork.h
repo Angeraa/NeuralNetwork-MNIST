@@ -13,7 +13,8 @@ class NeuralNetwork {
     NeuralNetwork& run(VectorXd& input);
     NeuralNetwork& backward(VectorXd &input, VectorXd &target, double learning_rate);
     VectorXd get_output();
-
+    void train(const std::vector<VectorXd> &inputs, std::vector<VectorXd> &targets, double learning_rate, int epochs);
+    void test(const std::vector<VectorXd> &inputs, std::vector<VectorXd> &targets);
 };
 
 #endif
