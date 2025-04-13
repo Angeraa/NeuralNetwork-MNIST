@@ -2,11 +2,14 @@
 #include <fstream>
 #include <WinSock2.h>
 #include "Eigen/Dense"
+#include <iostream>
 
 
 void read_mnist_data(const std::string &path, std::vector<Eigen::VectorXd> &data) {
+  std::cout << "Attempting read file: " << path << std::endl;
   std::ifstream file(path, std::ios::binary);
   if (file.is_open()) {
+    std::cout << "Reading file: " << path << std::endl;
     int magic_number = 0;
     int number_of_images = 0;
     int rows = 0;
@@ -36,8 +39,10 @@ void read_mnist_data(const std::string &path, std::vector<Eigen::VectorXd> &data
 }
 
 void read_mnist_labels(const std::string &path, std::vector<Eigen::VectorXd> &labels) {
+  std::cout << "Attempting read file: " << path << std::endl;
   std::ifstream file(path, std::ios::binary);
   if (file.is_open()) {
+    std::cout << "Reading file: " << path << std::endl;
     int magic_number = 0;
     int number_of_labels = 0;
 

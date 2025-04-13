@@ -6,12 +6,12 @@ Layer::Layer(int input_size,
     std::function<VectorXd(const VectorXd&)> activation_function_deriv) :
       activation_function(activation_function),
       activation_function_deriv(activation_function_deriv) {
-      weights = MatrixXd::Random(output_size, input_size);
+      weights = MatrixXd::Random(input_size, output_size);
       biases = VectorXd::Zero(output_size);
 }
 
 Layer& Layer::forward(const VectorXd &input) {
-  VectorXd output = weights * input + biases;
+  VectorXd output = weights.transpose() * input + biases;
   values = output;
   activated_values = activation_function(output);
   return *this;
