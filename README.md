@@ -3,8 +3,5 @@ Neural Network code for the MNIST dataset and different interations of it
 
 #### V0
 First time running with one hidden layer of size 64
-Accuracy around 90% with testing and training accuracy being very similar
-Possible Issues (Theoretical):
-  - Network understands the style of images from the dataset but not digits I might write myself
-Possible Solutions:
-  - Modify dataset by adding noise and other distorting effects like stretching and rotation to vary the inputs style much more than the dataset currently does
+Accuracy around 85% with testing and training accuracy being very similar
+- At this level, the accuracy seems to be too high. Something must be done wrong in the output layer setup or choice of activation/error functions
