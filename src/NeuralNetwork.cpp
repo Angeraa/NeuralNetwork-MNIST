@@ -63,7 +63,7 @@ void NeuralNetwork::train(const std::vector<VectorXd> &inputs, std::vector<Vecto
       }
       if (j < inputs.size() - 1 && j % 1000 == 0 && j != 0) {
         double ongoing_accuracy = static_cast<double>(correct) / j;
-        std::cout << "Ongoing Training Accuracy: " << ongoing_accuracy << std::endl;
+        std::cout << "Ongoing Training Accuracy: " << ongoing_accuracy << ", " << correct << " correct out of " << j << std::endl;
       }
 
       backward(input, target, learning_rate);
