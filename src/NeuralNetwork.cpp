@@ -58,7 +58,7 @@ void NeuralNetwork::train(const std::vector<VectorXd> &inputs, std::vector<Vecto
       int target_index;
       output.maxCoeff(&predicted_index);
       target.maxCoeff(&target_index);
-      if (predicted_index == target_index && output[predicted_index] >= 0.80) {
+      if (predicted_index == target_index) {
         correct++;
       }
       if (j < inputs.size() - 1 && j % 1000 == 0 && j != 0) {
@@ -91,7 +91,7 @@ void NeuralNetwork::test(const std::vector<VectorXd> &inputs, std::vector<Vector
     int target_index;
     output.maxCoeff(&predicted_index);
     target.maxCoeff(&target_index);
-    if (predicted_index == target_index && output[predicted_index] >= 0.80) {
+    if (predicted_index == target_index) {
       correct++;
     }
     if (i < inputs.size() - 1 && i % 200 == 0 && i != 0) {
