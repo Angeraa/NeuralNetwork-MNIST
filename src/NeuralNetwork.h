@@ -2,14 +2,15 @@
 #define NEURALNETWORK_H
 
 #include <vector>
+#include <memory>
 
-#include "Layer.h"
+#include "layers/Layer.h"
 
 class NeuralNetwork {
-  std::vector<Layer> layers;
+  std::vector<std::unique_ptr<Layer>> layers;
 
   public:
-    NeuralNetwork(std::vector<Layer> layers);
+    NeuralNetwork(std::vector<std::unique_ptr<Layer>> layers);
     NeuralNetwork& run(VectorXd& input);
     NeuralNetwork& backward(VectorXd &input, VectorXd &target, double learning_rate);
     VectorXd get_output();

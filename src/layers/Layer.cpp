@@ -2,10 +2,8 @@
 
 Layer::Layer(int input_size,
     int output_size,
-    std::function<VectorXd(const VectorXd&)> activation_function,
-    std::function<VectorXd(const VectorXd&)> activation_function_deriv) :
-      activation_function(activation_function),
-      activation_function_deriv(activation_function_deriv) {
+    std::function<VectorXd(const VectorXd&)> activation_function) :
+      activation_function(activation_function) {
       weights = MatrixXd::Random(input_size, output_size);
       biases = VectorXd::Zero(output_size);
 }
@@ -19,10 +17,6 @@ Layer& Layer::forward(const VectorXd &input) {
 
 VectorXd Layer::get_activated_values() {
   return activated_values;
-}
-
-VectorXd Layer::get_deriv_activated_values() {
-  return activation_function_deriv(values);
 }
 
 Layer& Layer::set_delta(const VectorXd &delta) {

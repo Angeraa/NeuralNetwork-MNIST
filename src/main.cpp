@@ -1,10 +1,12 @@
 #include <iostream>
 #include <Eigen/Dense>
+#include <memory>
 
-#include "Layer.h"
 #include "functions.h"
 #include "NeuralNetwork.h"
 #include "reading.h"
+#include "layers/HiddenLayer.h"
+#include "layers/OutputLayer.h"
 
 using namespace std;
 using namespace Eigen;
@@ -27,10 +29,11 @@ int main(void) {
   read_mnist_data(test_data_path, test_data);
   read_mnist_labels(test_labels_path, test_labels);
 
-  Layer hidden_layer(784, 64, sigmoid, sigmoid_deriv);
-  Layer output_layer(64, 10, sigmoid, sigmoid_deriv);
+  vector<unique_ptr<Layer>> v;
+  v.push_back(make_unique<HiddenLayer>(784, 64, sigmoid, sigmoid_deriv));
+  v.push_back(make_unique<OutputLayer>(64, 10, softmax, softmax_error_deriv));
 
-  NeuralNetwork network({hidden_layer, output_layer});
+  NeuralNetwork network(move(v));
 
   network.train(train_data, train_labels, 0.1, 3);
   network.test(test_data, test_labels);

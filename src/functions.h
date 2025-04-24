@@ -9,8 +9,10 @@ VectorXd sigmoid(const VectorXd &input);
 
 VectorXd sigmoid_deriv(const VectorXd &input);
 
+VectorXd softmax(const VectorXd &input);
+
 double error(const VectorXd &output, const VectorXd &target);
 
-VectorXd error_deriv(const VectorXd &output, const VectorXd &target);
+VectorXd softmax_error_deriv(const VectorXd &output, const VectorXd &target);
 
 #endif
