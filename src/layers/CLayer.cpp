@@ -1,5 +1,5 @@
 #include "CLayer.h"
-#include "functions.h"
+#include "../functions.h"
 
 #include <cmath>
 

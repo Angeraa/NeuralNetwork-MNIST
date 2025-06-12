@@ -3,7 +3,7 @@
 
 #include <Eigen/Dense>
 #include <vector>
-#include "Dimension.h"
+#include "../utils/Dimension.h"
 
 using namespace Eigen;
 

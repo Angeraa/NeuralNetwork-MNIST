@@ -2,7 +2,7 @@
 #define FUNCTIONS_H
 
 #include <Eigen/dense>
-#include "Dimension.h"
+#include "utils/Dimension.h"
 
 using namespace Eigen;
 

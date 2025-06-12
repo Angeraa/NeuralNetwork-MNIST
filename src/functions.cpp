@@ -25,7 +25,7 @@ VectorXd softmax_error_deriv(const VectorXd &output, const VectorXd &target) {
   return output - target;
 }
 
-MatrixXd corr2D(const MatrixXd &input, const MatrixXd &kernel, const std::string &mode = "valid") {
+MatrixXd corr2D(const MatrixXd &input, const MatrixXd &kernel, const std::string &mode) {
   int in_h = input.rows(), in_w = input.cols();
   int k_h = kernel.rows(), k_w = kernel.cols();
   int out_h, out_w;
