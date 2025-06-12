@@ -18,6 +18,8 @@ CLayer::CLayer(int ksize, int depth, Dimension input_shape, std::function<Matrix
 }
 
 CLayer& CLayer::forward(const std::vector<MatrixXd> &inputs) {
+  // save input for backtrack
+  this->input = inputs;
   std::vector<MatrixXd> outputs;
   for (size_t i = 0; i < biases.size(); i++) {
     MatrixXd bias = MatrixXd::Constant(output_shape.height, output_shape.width, biases[i]);
@@ -30,6 +32,10 @@ CLayer& CLayer::forward(const std::vector<MatrixXd> &inputs) {
   }
   values = outputs;
   //activate the values and store them
+  activated_values.clear();
+  for (MatrixXd mat : outputs) {
+    activated_values.push_back(activation_function(mat));
+  }
 
   return *this;
 }

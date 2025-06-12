@@ -13,6 +13,7 @@ class CLayer {
   int depth;
   Dimension input_shape;
   Dimension output_shape;
+  std::vector<MatrixXd> input;
   std::vector<MatrixXd> values;
   std::vector<MatrixXd> activated_values;
   std::function<MatrixXd(const MatrixXd&)> activation_function;
