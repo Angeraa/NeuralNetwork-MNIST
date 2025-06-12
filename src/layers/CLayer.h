@@ -9,7 +9,8 @@ using namespace Eigen;
 
 class CLayer {
   std::vector<std::vector<MatrixXd>> kernels;
-  std::vector<double> biases;
+  int ksize;
+  std::vector<MatrixXd> biases;
   int depth;
   Dimension input_shape;
   Dimension output_shape;
@@ -27,7 +28,7 @@ class CLayer {
     CLayer& set_delta(const MatrixXd &delta);
     MatrixXd get_delta();
     std::vector<MatrixXd> get_kernel(int index);
-    CLayer& update_kernel(const MatrixXd &input, double learning_rate);
+    CLayer& update_kernel(const std::vector<MatrixXd> &output__gradient, double learning_rate);
 };
 
 #endif

@@ -3,7 +3,7 @@
 
 #include <cmath>
 
-CLayer::CLayer(int ksize, int depth, Dimension input_shape, std::function<MatrixXd(const MatrixXd&)> activation_function): depth(depth), input_shape(input_shape), activation_function(activation_function) {
+CLayer::CLayer(int ksize, int depth, Dimension input_shape, std::function<MatrixXd(const MatrixXd&)> activation_function): ksize(ksize), depth(depth), input_shape(input_shape), activation_function(activation_function) {
 
   for (int i = 0; i < depth; i++) {
     std::vector<MatrixXd> kernel;
@@ -14,7 +14,7 @@ CLayer::CLayer(int ksize, int depth, Dimension input_shape, std::function<Matrix
     kernels.push_back(kernel);
   }
   output_shape = {input_shape.width - ksize + 1, input_shape.height- ksize + 1, depth};
-  biases = std::vector<double>(depth, 0.0);
+  biases = std::vector<MatrixXd>(depth, MatrixXd::Zero(ksize, ksize));
 }
 
 CLayer& CLayer::forward(const std::vector<MatrixXd> &inputs) {
@@ -22,12 +22,11 @@ CLayer& CLayer::forward(const std::vector<MatrixXd> &inputs) {
   this->input = inputs;
   std::vector<MatrixXd> outputs;
   for (size_t i = 0; i < biases.size(); i++) {
-    MatrixXd bias = MatrixXd::Constant(output_shape.height, output_shape.width, biases[i]);
-    outputs.push_back(bias);
+    outputs.push_back(biases[i]);
   }
   for (int i = 0; i < depth; i++) {
     for (int j = 0; j < input_shape.depth; j++) {
-      outputs[i] += corr2D(inputs[j], kernels[i][j], output_shape);
+      outputs[i] += corr2D(inputs[j], kernels[i][j]);
     }
   }
   values = outputs;
@@ -54,7 +53,22 @@ MatrixXd CLayer::get_delta() {
 std::vector<MatrixXd> CLayer::get_kernel(int index) {
   return kernels[index];
 }
-CLayer& CLayer::update_kernel(const MatrixXd &input, double learning_rate) {
-  // Look up the math and put it here
+CLayer& CLayer::update_kernel(const std::vector<MatrixXd> &output_gradient, double learning_rate) {
+  std::vector<std::vector<MatrixXd>> kernel_gradient(depth, std::vector<MatrixXd>(input_shape.depth, MatrixXd::Zero(ksize, ksize)));
+  std::vector<MatrixXd> input_gradient(input_shape.depth, MatrixXd::Zero(input_shape.height, input_shape.width));
+  for (int i = 0; i < depth; i++) {
+    for (int j = 0; i < input_shape.depth; j++) {
+      kernel_gradient[i][j] = corr2D(input[j], output_gradient[i]);
+      input_gradient[j] += corr2D(output_gradient[i], kernels[i][j], "full");
+    }
+  }
+  
+  for (int i = 0; i < depth; i++) {
+    for (int j = 0; i < input_shape.depth; j++) {
+      kernels[i][j] -= learning_rate * kernel_gradient[i][j];
+    }
+    biases[i] -= learning_rate * output_gradient[i];
+  }
+
   return *this;
 }
